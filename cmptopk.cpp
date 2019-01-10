@@ -1,8 +1,10 @@
 #include <algorithm>
 #include <chrono>
 #include <ctime>
+#include <functional>
 #include <iostream>
 #include <map>
+#include <queue>
 #include <random>
 #include <vector>
 using namespace std;
@@ -16,7 +18,7 @@ map<string, testfunc> testfuncmap;
     namespace {                                                                \
     struct addfunc##func {                                                     \
         addfunc##func() { testfuncmap[#func] = func; }                         \
-    } anonymous##func;                                                             \
+    } annoy##func;                                                             \
     }
 
 void display(const vector<int> &data, bool flag = false) {
@@ -29,22 +31,6 @@ void display(const vector<int> &data, bool flag = false) {
 }
 
 int func1(vector<int> &data, size_t k) {
-    cout << "std::partial_sort" << endl;
-    partial_sort(data.begin(), data.begin() + k, data.end());
-    display(data);
-    return data[k - 1];
-}
-ADDFUNC(func1);
-
-int func2(vector<int> &data, size_t k) {
-    cout << "std::nth_element" << endl;
-    nth_element(data.begin(), data.begin() + k - 1, data.end());
-    display(data);
-    return data[k - 1];
-}
-ADDFUNC(func2);
-
-int func3(vector<int> &data, size_t k) {
     cout << "std::pop_heap and std::push_heap" << endl;
     vector<int> heap;
     heap.reserve(k);
@@ -62,9 +48,9 @@ int func3(vector<int> &data, size_t k) {
     }
     return heap.front();
 }
-ADDFUNC(func3);
+ADDFUNC(func1);
 
-int func4(vector<int> &data, size_t k) {
+int func2(vector<int> &data, size_t k) {
     cout << "replace heap top and adjust heap" << endl;
     vector<int> heap;
     heap.reserve(k);
@@ -98,6 +84,22 @@ int func4(vector<int> &data, size_t k) {
     }
     return heap.front();
 }
+ADDFUNC(func2);
+
+int func3(vector<int> &data, size_t k) {
+    cout << "std::partial_sort" << endl;
+    partial_sort(data.begin(), data.begin() + k, data.end());
+    display(data);
+    return data[k - 1];
+}
+ADDFUNC(func3);
+
+int func4(vector<int> &data, size_t k) {
+    cout << "std::nth_element" << endl;
+    nth_element(data.begin(), data.begin() + k - 1, data.end());
+    display(data);
+    return data[k - 1];
+}
 ADDFUNC(func4);
 
 int func5(vector<int> &data, size_t k) {
@@ -126,6 +128,21 @@ int func5(vector<int> &data, size_t k) {
     }
 }
 ADDFUNC(func5);
+
+int func6(vector<int> &data, size_t k) {
+    cout << "std::priority_queue" << endl;
+    priority_queue<int, vector<int>, less<int>> prique;
+    for (int i : data) {
+        if (prique.size() < k) {
+            prique.push(i);
+        } else if (prique.top() > i) {
+            prique.pop();
+            prique.push(i);
+        }
+    }
+    return prique.top();
+}
+ADDFUNC(func6);
 
 int main() {
     const int N = 10000000;
