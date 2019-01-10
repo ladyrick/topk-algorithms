@@ -16,7 +16,7 @@ map<string, testfunc> testfuncmap;
     namespace {                                                                \
     struct addfunc##func {                                                     \
         addfunc##func() { testfuncmap[#func] = func; }                         \
-    } annoy##func;                                                             \
+    } anonymous##func;                                                             \
     }
 
 void display(const vector<int> &data, bool flag = false) {
