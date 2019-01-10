@@ -143,7 +143,7 @@ int main() {
     }
     // make sure the correct result has only one value.
     data.push_back(expected_result);
-    for (int i = k + 1; i < N; i++) {
+    for (int i = k; i < N; i++) {
         data.push_back(dis_right(gen));
     }
     display(data);
